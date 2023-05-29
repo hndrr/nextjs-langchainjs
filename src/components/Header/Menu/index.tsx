@@ -13,14 +13,16 @@ import {
 import { useAuth } from "@/hooks/useAuth";
 
 type MenuProps = {
+  onOpen: () => void;
   children?: React.ReactNode;
 } & BoxProps;
 
 export const Menu = (props: MenuProps) => {
+  const { children, onOpen, ...rest } = props;
   const { session, signOut } = useAuth();
 
   return (
-    <Box {...props}>
+    <Box {...rest}>
       <ChakraMenu>
         <MenuButton as={Button} w={12} h={12}>
           <VStack spacing={1} mt="20px">
@@ -37,6 +39,7 @@ export const Menu = (props: MenuProps) => {
           <MenuItem>Create a Copy</MenuItem>
           <MenuItem>Mark as Draft</MenuItem>
           <MenuItem>Delete</MenuItem> */}
+          <MenuItem onClick={onOpen}>Manage API Key</MenuItem>
           {session && <MenuItem onClick={signOut}>SignOut</MenuItem>}
         </MenuList>
       </ChakraMenu>
