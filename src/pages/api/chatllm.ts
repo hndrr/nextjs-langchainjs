@@ -6,14 +6,12 @@ type ChatLlmProps = {
   message: string;
 } & PartialOpenAiChatModel;
 
-export const runChatllm = async ({
-  model,
-  message,
-  prefixMessages,
-}: ChatLlmProps) => {
+export const runChatllm = async (props: ChatLlmProps) => {
+  const { model, message, ...rest } = props;
+
   const chat = model({
     temperature: 0.9,
-    prefixMessages,
+    ...rest,
   });
   const response = await chat.call(message);
   return response;

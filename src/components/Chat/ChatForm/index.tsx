@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { ReactElement, useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
+import { useLocalStorage } from "react-use";
 import type { Message } from "@/components/Chat/ChatMessages";
 import { useAuth } from "@/hooks/useAuth";
 // import { passOpenAiModel, passPromptTemplate } from "@/lib/langchain";
@@ -25,30 +26,33 @@ type ChatFormProps = {
 
 const queryKey: string[] = ["messages"];
 
-const postMessage = async (message: string) => {
-  // const res = await runChain({
-  //   variant: message,
-  //   prompt: passPromptTemplate,
-  //   model: passOpenAiModel,
-  // });
-  const res = await runChatllm({
-    model: passOpenAiChatModel,
-    message,
-    prefixMessages: [
-      {
-        role: "system",
-        content: "Please reply in Japanese.",
-      },
-    ],
-  });
-
-  return res;
-};
-
 export const ChatForm = (props: ChatFormProps) => {
   const { children, setMessages } = props;
   const { session, profileFromGithub } = useAuth();
   const [messageText, setMessageText] = useState<Database[]>([]);
+  const [apiKey] = useLocalStorage("OpenAI_API_Key", "");
+
+  const postMessage = async (message: string) => {
+    // const res = await runChain({
+    //   variant: message,
+    //   prompt: passPromptTemplate,
+    //   model: passOpenAiModel,
+    // });
+    console.log(apiKey);
+    const res = await runChatllm({
+      model: passOpenAiChatModel,
+      message,
+      openAIApiKey: apiKey, // TODO
+      prefixMessages: [
+        {
+          role: "system",
+          content: "Please reply in Japanese.",
+        },
+      ],
+    });
+
+    return res;
+  };
 
   const methods = useForm<FormValues>({
     mode: "onChange",
