@@ -8,7 +8,7 @@ export const dummyMessages: DummyMessages = {
   data: [
     {
       role: "ai",
-      text: "わたしの名前はPODです。",
+      text: "わたしの名前はGAFAM Agentです。",
     },
     {
       role: "ai",
