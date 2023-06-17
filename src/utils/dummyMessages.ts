@@ -23,7 +23,7 @@ export const dummyChat: Message[] = [
     role: "system",
   },
   {
-    text: "私の名前はポッドです。",
+    text: "わたしの名前はGAFAM Agentです。",
     role: "generic",
   },
   {
