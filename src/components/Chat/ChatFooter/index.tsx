@@ -49,7 +49,7 @@ export const ChatFooter = ({}: ChatFooterProps) => {
         }}
         isDisabled={isDisabled}
       >
-        送信
+        Send
       </Button>
     </Flex>
   );
