@@ -23,11 +23,7 @@ export const dummyChat: Message[] = [
     role: "system",
   },
   {
-    text: "わたしの名前はGAFAM Agentです。",
-    role: "generic",
-  },
-  {
-    text: "何かお困りですか？",
+    text: "Hello Jay! I'm happy to help you conduct the interview and provide feedback. To ensure control conditions, I'll follow the guidelines you've provided. Please provide me with the interview questions you'd like me to ask the candidates, and I'll proceed with the interview accordingly.",
     role: "generic",
   },
 ];
