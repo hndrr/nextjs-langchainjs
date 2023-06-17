@@ -4,13 +4,13 @@ import { FormProvider, useForm } from "react-hook-form";
 import type { Message } from "@/components/Chat/ChatMessages";
 import { useAuth } from "@/hooks/useAuth";
 // import { passOpenAiModel, passPromptTemplate } from "@/lib/langchain";
-import { passChatOpenAiModel, passOpenAiChatModel } from "@/lib/langchain";
+import { passOpenAiChatModel } from "@/lib/langchain";
 import type { Database } from "@/lib/supabase";
-import {
-  TABLE_NAME,
-  addSupabaseData,
-  fetchDatabase,
-} from "@/lib/supabase/functions";
+// import {
+//   TABLE_NAME,
+//   addSupabaseData,
+//   fetchDatabase,
+// } from "@/lib/supabase/functions";
 import { runChain, runChat, runChatllm } from "@/pages/api";
 import { dummyChat } from "@/utils/dummyMessages";
 
@@ -75,7 +75,7 @@ export const ChatForm = (props: ChatFormProps) => {
     }
     setMessages((old) => [...old, { role: "human", text: data.message }]);
     // ユーザーInputのDB登録
-    addSupabaseData({ message: data.message, ...profileFromGithub });
+    // addSupabaseData({ message: data.message, ...profileFromGithub });
     reset();
     // 非同期処理
     sendMessage.mutate(data.message, {
