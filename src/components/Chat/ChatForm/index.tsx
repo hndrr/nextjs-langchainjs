@@ -1,3 +1,4 @@
+import { Center, Spinner } from "@chakra-ui/react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { ReactElement, useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
@@ -131,6 +132,14 @@ export const ChatForm = (props: ChatFormProps) => {
   //   })();
   //   fetchRealtimeData();
   // }, []);
+
+  if (sendMessage.isLoading) {
+    return (
+      <Center h="100vh">
+        <Spinner />
+      </Center>
+    );
+  }
 
   return (
     <FormProvider {...methods}>
