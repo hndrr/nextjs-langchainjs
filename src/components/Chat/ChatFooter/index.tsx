@@ -25,7 +25,7 @@ export const ChatFooter = ({}: ChatFooterProps) => {
         _focus={{
           border: "1px solid black",
         }}
-        placeholder="メッセージを入力してください"
+        placeholder="Please enter your message"
         {...register("message", {
           required: true,
           maxLength: 100,
