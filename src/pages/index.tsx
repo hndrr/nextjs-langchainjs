@@ -29,7 +29,7 @@ export default function Home() {
               borderColor="gray.400"
             />
             <Flex
-              maxW="480px"
+              maxW="640px"
               w="100%"
               h="100%"
               flexDir="column"
