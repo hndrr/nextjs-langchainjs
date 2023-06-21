@@ -1,19 +1,20 @@
-import { Center, Spinner } from "@chakra-ui/react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { ReactElement, useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import type { Message } from "@/components/Chat/ChatMessages";
-import { useAuth } from "@/hooks/useAuth";
-// import { passOpenAiModel, passPromptTemplate } from "@/lib/langchain";
+import { MutationContext } from "@/contexts";
+import { useUpdateDataMutation } from "@/hooks/useUpdateDataMutation";
 import { passOpenAiChatModel } from "@/lib/langchain";
-import type { Database } from "@/lib/supabase";
+import { runChain, runChat, runChatllm } from "@/pages/api";
+// import { useAuth } from "@/hooks/useAuth";
+// import { passOpenAiModel, passPromptTemplate } from "@/lib/langchain";
+// import type { Database } from "@/lib/supabase";
 // import {
 //   TABLE_NAME,
 //   addSupabaseData,
 //   fetchDatabase,
 // } from "@/lib/supabase/functions";
-import { runChain, runChat, runChatllm } from "@/pages/api";
-import { dummyChat } from "@/utils/dummyMessages";
+// import { dummyChat } from "@/utils/dummyMessages";
 
 type FormValues = {
   message: string;
@@ -68,8 +69,8 @@ const postMessage = async (message: string) => {
 
 export const ChatForm = (props: ChatFormProps) => {
   const { children, setMessages } = props;
-  const { session, profileFromGithub } = useAuth();
-  const [messageText, setMessageText] = useState<Database[]>([]);
+  // const { session, profileFromGithub } = useAuth();
+  // const [messageText, setMessageText] = useState<Database[]>([]);
 
   const methods = useForm<FormValues>({
     mode: "onChange",
@@ -82,13 +83,8 @@ export const ChatForm = (props: ChatFormProps) => {
     watch,
   } = methods;
 
-  const queryClient = useQueryClient();
-  const sendMessage = useMutation(postMessage, {
-    onSuccess: (data) => {
-      queryClient.invalidateQueries(queryKey);
-    },
-  });
-  const values = watch();
+  const sendMessage = useUpdateDataMutation(postMessage, queryKey);
+  // const values = watch();
 
   const onSubmitForm = (data: FormValues) => {
     if (!data.message.trim().length) {
@@ -153,17 +149,11 @@ export const ChatForm = (props: ChatFormProps) => {
   //   fetchRealtimeData();
   // }, []);
 
-  if (sendMessage.isLoading) {
-    return (
-      <Center h="100vh">
-        <Spinner />
-      </Center>
-    );
-  }
-
   return (
-    <FormProvider {...methods}>
-      <form onSubmit={handleSubmit(onSubmitForm)}>{children}</form>
-    </FormProvider>
+    <MutationContext.Provider value={sendMessage}>
+      <FormProvider {...methods}>
+        <form onSubmit={handleSubmit(onSubmitForm)}>{children}</form>
+      </FormProvider>
+    </MutationContext.Provider>
   );
 };
