@@ -3,6 +3,7 @@ import { ReactElement, useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import type { Message } from "@/components/Chat/ChatMessages";
 import { MutationContext } from "@/contexts";
+import { useUpdateDataMutation } from "@/hooks/useUpdateDataMutation";
 import { passOpenAiChatModel } from "@/lib/langchain";
 import { runChain, runChat, runChatllm } from "@/pages/api";
 // import { useAuth } from "@/hooks/useAuth";
@@ -82,13 +83,8 @@ export const ChatForm = (props: ChatFormProps) => {
     watch,
   } = methods;
 
-  const queryClient = useQueryClient();
-  const sendMessage = useMutation(postMessage, {
-    onSuccess: (data) => {
-      queryClient.invalidateQueries(queryKey);
-    },
-  });
-  const values = watch();
+  const sendMessage = useUpdateDataMutation(postMessage, queryKey);
+  // const values = watch();
 
   const onSubmitForm = (data: FormValues) => {
     if (!data.message.trim().length) {
