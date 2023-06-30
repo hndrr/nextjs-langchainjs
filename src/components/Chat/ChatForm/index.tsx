@@ -5,7 +5,8 @@ import type { Message } from "@/components/Chat/ChatMessages";
 import { MutationContext } from "@/contexts";
 import { useUpdateDataMutation } from "@/hooks/useUpdateDataMutation";
 import { passOpenAiChatModel } from "@/lib/langchain";
-import { runChain, runChat, runChatllm } from "@/pages/api";
+import { runChatMemory } from "@/lib/langchain/memory/chat_memory";
+import { runChain, runChat, runChatllm, postMessage } from "@/pages/api";
 // import { useAuth } from "@/hooks/useAuth";
 // import { passOpenAiModel, passPromptTemplate } from "@/lib/langchain";
 // import type { Database } from "@/lib/supabase";
@@ -22,53 +23,14 @@ type FormValues = {
 
 type ChatFormProps = {
   children: ReactElement;
+  messages: Message[];
   setMessages: React.Dispatch<React.SetStateAction<Message[]>>;
 };
 
 const queryKey: string[] = ["messages"];
 
-const postMessage = async (message: string) => {
-  // const res = await runChain({
-  //   variant: message,
-  //   prompt: passPromptTemplate,
-  //   model: passOpenAiModel,
-  // });
-  const res = await runChatllm({
-    model: passOpenAiChatModel,
-    message,
-    prefixMessages: [
-      {
-        role: "system",
-        content: `You are JAY, GAFAM's Head of Engineering Recruitment. You are to ask interview questions to candidates and provide feedback on those questions from a technical and mindset perspective in engineering recruitment and from an English perspective. Please conduct the interview according to the following control conditions.
-
-        Control Conditions
-        Please behave cheerfully during the interview.
-        ・Please choose one of the following interview questions during the interview
-        ∙ Please ask each question one by one during the interview
-        The rally during the interview will continue in the form of interviewer's question -> job seeker's answer -> interviewer's feedback -> interviewer's next question.... The rally continues in the following manner
-        
-        Interview Questions
-        What is the project you are most proud of that you have worked on?
-        What was your most difficult engineering problem and how did you solve it?
-        What is your approach to learning a new technology?
-        What tools and techniques do you use to manage large projects?
-        What interpersonal problems have you faced as a member of a team? How did you solve them?
-        Of the programming languages and techniques you have used, which do you like best? Why?
-        What is your approach to debugging code to achieve expected results?
-        How do you respond when many requirements change on a project with an imminent deadline?
-        How do you evaluate the performance of the systems you develop?
-        What are your views on current engineering challenges and trends?
-        
-        Please begin the interview with a Welcome message.`,
-      },
-    ],
-  });
-
-  return res;
-};
-
 export const ChatForm = (props: ChatFormProps) => {
-  const { children, setMessages } = props;
+  const { children, messages, setMessages } = props;
   // const { session, profileFromGithub } = useAuth();
   // const [messageText, setMessageText] = useState<Database[]>([]);
 
@@ -90,22 +52,25 @@ export const ChatForm = (props: ChatFormProps) => {
     if (!data.message.trim().length) {
       return;
     }
-    setMessages((old) => [...old, { role: "human", text: data.message }]);
+    setMessages((old) => [...old, { role: "user", content: data.message }]);
     // ユーザーInputのDB登録
     // addSupabaseData({ message: data.message, ...profileFromGithub });
     reset();
     // 非同期処理
-    sendMessage.mutate(data.message, {
-      onSuccess: (res) => {
-        setMessages((old) => [...old, { role: "ai", text: res }]);
-        // TODO responceのDB登録
-        // addSupabaseData({
-        //   message: res,
-        //   nickName: "ai",
-        //   avatarUrl: "",
-        // });
-      },
-    });
+    sendMessage.mutate(
+      { message: data.message, history: messages },
+      {
+        onSuccess: (res) => {
+          setMessages((old) => [...old, { role: "assistant", content: res }]);
+          // TODO responceのDB登録
+          // addSupabaseData({
+          //   message: res,
+          //   nickName: "ai",
+          //   avatarUrl: "",
+          // });
+        },
+      }
+    );
   };
 
   // TODO supabaseのrealtime eventを利用してDBを更新する

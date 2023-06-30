@@ -3,8 +3,13 @@ import {
   useMutation,
   useQueryClient,
 } from "@tanstack/react-query";
+import { ChatMessageHistory } from "langchain/memory";
+import { Message } from "@/components/Chat/ChatMessages";
 
-export type UpdateFunctionType = (message: string) => Promise<string>;
+export type UpdateFunctionType = (data: {
+  message: string;
+  history: Message[];
+}) => Promise<string>;
 
 export const useUpdateDataMutation = (
   updateFunction: UpdateFunctionType,
@@ -12,9 +17,12 @@ export const useUpdateDataMutation = (
 ) => {
   const queryClient = useQueryClient();
 
-  return useMutation((message: string) => updateFunction(message), {
-    onSuccess: () => {
-      queryClient.invalidateQueries(queryKey);
-    },
-  });
+  return useMutation(
+    (data: { message: string; history: Message[] }) => updateFunction(data),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(queryKey);
+      },
+    }
+  );
 };
