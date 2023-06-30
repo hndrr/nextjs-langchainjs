@@ -23,13 +23,13 @@ export const runChat = async ({ model, messages }: ChatProps) => {
   });
   const response = await chat.call(
     messages.map((message) => {
-      if (message.role === "human") {
-        return humanChatMessage(message.text);
+      if (message.role === "user") {
+        return humanChatMessage(message.content);
       }
-      if (message.role === "ai") {
-        return aiChatMessage(message.text);
+      if (message.role === "assistant") {
+        return aiChatMessage(message.content);
       }
-      return systemPrompt(message.text);
+      return systemPrompt(message.content);
     })
   );
   return response;
