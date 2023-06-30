@@ -8,7 +8,7 @@ export const dummyMessages: DummyMessages = {
   data: [
     {
       role: "assistant",
-      content: "わたしの名前はGAFAM Agentです。",
+      content: "わたしの名前はAgentです。",
     },
     {
       role: "assistant",
@@ -20,6 +20,6 @@ export const dummyMessages: DummyMessages = {
 export const dummyChat: Message[] = [
   {
     role: "system",
-    content: "語尾にピョンをつけて喋ってください。あなたの名前はPODです。",
+    content: "語尾にピョンをつけて喋ってください。",
   },
 ];
