@@ -12,6 +12,8 @@ export const passOpenAiChatModel = (props: Partial<OpenAiChatModel>) => {
     props;
   const model = new OpenAIChat({
     openAIApiKey,
+    modelName: "gpt-3.5-turbo-0613",
+    streaming: true,
     ...rest,
   });
 

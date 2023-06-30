@@ -12,7 +12,6 @@ export const runChatllm = async ({
   prefixMessages,
 }: ChatLlmProps) => {
   const chat = model({
-    modelName: "gpt-3.5-turbo-0613",
     temperature: 0.9,
     prefixMessages,
   });

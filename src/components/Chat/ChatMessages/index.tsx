@@ -5,8 +5,8 @@ import { Spinner } from "@/components/Spinner";
 import { MutationContext } from "@/contexts";
 
 export type Message = {
-  role: "human" | "ai" | "generic" | "system";
-  text: string;
+  role: "user" | "assistant" | "system";
+  content: string;
 };
 
 type ChatMessagesProps = {
@@ -31,12 +31,12 @@ export const ChatMessages = ({ messages }: ChatMessagesProps) => {
     <Flex w="100%" h="80%" overflowY="scroll" flexDirection="column" p="3">
       {messages
         .filter((item: Message) => item.role !== "system")
-        .map((item: { role: string; text: any }, index: number) => {
+        .map((item: { role: string; content: any }, index: number) => {
           return (
             <ChatBubble
               key={index}
-              message={item.text}
-              isOwnMessage={item.role === "human"}
+              message={item.content}
+              isOwnMessage={item.role === "user"}
             />
           );
         })}
