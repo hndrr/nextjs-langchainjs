@@ -27,8 +27,6 @@ type ChatFormProps = {
   setMessages: React.Dispatch<React.SetStateAction<Message[]>>;
 };
 
-const queryKey: string[] = ["messages"];
-
 export const ChatForm = (props: ChatFormProps) => {
   const { children, messages, setMessages } = props;
   // const { session, profileFromGithub } = useAuth();
@@ -45,7 +43,7 @@ export const ChatForm = (props: ChatFormProps) => {
     watch,
   } = methods;
 
-  const sendMessage = useUpdateDataMutation(postMessage, queryKey);
+  const sendMessage = useUpdateDataMutation();
   // const values = watch();
 
   const onSubmitForm = (data: FormValues) => {
