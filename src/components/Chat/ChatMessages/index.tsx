@@ -1,5 +1,6 @@
 import { Flex } from "@chakra-ui/react";
 import React, { useContext, useEffect, useRef } from "react";
+
 import { ChatBubble } from "@/components/Chat/ChatMessages/ChatBubble";
 import { Spinner } from "@/components/Spinner";
 import { MutationContext } from "@/contexts";
@@ -28,7 +29,7 @@ export const ChatMessages = ({ messages }: ChatMessagesProps) => {
   };
 
   return (
-    <Flex w="100%" h="80%" overflowY="scroll" flexDirection="column" p="3">
+    <Flex direction="column" overflowY="scroll" w="100%" h="80%" p="3">
       {messages
         .filter((item: Message) => item.role !== "system")
         .map((item: { role: string; content: any }, index: number) => {

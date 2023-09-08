@@ -10,6 +10,7 @@ import {
   Text,
   type BoxProps,
 } from "@chakra-ui/react";
+
 import { useAuth } from "@/hooks/useAuth";
 
 type MenuProps = {
@@ -23,11 +24,11 @@ export const Menu = (props: MenuProps) => {
     <Box {...props}>
       <ChakraMenu>
         <MenuButton as={Button} w={12} h={12}>
-          <VStack spacing={1} mt="20px">
+          <VStack mt="20px" spacing={1}>
             <Box boxSize="40px">
               <HamburgerIcon w={6} h={6} />
             </Box>
-            <Text fontSize="sm" position="relative" top="-22px">
+            <Text pos="relative" top="-22px" fontSize="sm">
               Menu
             </Text>
           </VStack>

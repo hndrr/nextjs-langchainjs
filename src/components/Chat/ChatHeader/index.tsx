@@ -1,18 +1,19 @@
 import { Flex, Avatar, AvatarBadge, Text } from "@chakra-ui/react";
 import React from "react";
+
 import { ChatIcon } from "@/components/SvgIcons";
 
 export const ChatHeader = () => {
   return (
     <Flex w="100%">
       <Avatar
-        size="lg"
-        icon={<ChatIcon boxSize="50px" bg="white" />}
         bg="white"
+        icon={<ChatIcon boxSize="50px" bg="white" />}
+        size="lg"
       >
         <AvatarBadge boxSize="1.25em" bg="green.500" />
       </Avatar>
-      <Flex flexDirection="column" mx="5" justify="center">
+      <Flex justify="center" direction="column" mx="5">
         <Text fontSize="lg" fontWeight="bold">
           Agent
         </Text>

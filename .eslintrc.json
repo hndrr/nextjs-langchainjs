@@ -1,13 +1,69 @@
 {
+  "parser": "@typescript-eslint/parser",
+  "plugins": [
+    "import",
+    "unused-imports",
+    "@typescript-eslint",
+    "react",
+    "react-refresh",
+    "chakra-ui"
+  ],
+  "parserOptions": {
+    "project": true
+  },
   "extends": ["next", "prettier"],
   "rules": {
+    "@typescript-eslint/no-unused-vars": "off",
+    "unused-imports/no-unused-imports": "warn",
     "import/order": [
-      "error",
+      "warn",
       {
+        "groups": [
+          "builtin",
+          "external",
+          "internal",
+          "parent",
+          "sibling",
+          "index",
+          "object",
+          "type"
+        ],
+        "newlines-between": "always", // import groups の間を1行あける
+        "pathGroupsExcludedImportTypes": ["builtin"],
         "alphabetize": {
-          "order": "asc"
-        }
+          "order": "asc", // 昇順
+          "caseInsensitive": true // 大文字小文字を区別する
+        },
+        "pathGroups": [
+          {
+            "pattern": "src/types/**",
+            "group": "internal",
+            "position": "before"
+          },
+          {
+            "pattern": "src/repositories/**",
+            "group": "internal",
+            "position": "before"
+          }
+        ]
       }
-    ]
+    ],
+    "@typescript-eslint/consistent-type-imports": [
+      "warn",
+      {
+        "prefer": "type-imports"
+      }
+    ],
+    "react-refresh/only-export-components": [
+      "warn",
+      {
+        "allowConstantExport": true
+      }
+    ],
+    "react/jsx-uses-react": "off",
+    "react/react-in-jsx-scope": "off",
+    "chakra-ui/props-order": "warn",
+    "chakra-ui/props-shorthand": "warn",
+    "chakra-ui/require-specific-component": "warn"
   }
 }

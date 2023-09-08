@@ -19,13 +19,13 @@ export const ChatFooter = ({}: ChatFooterProps) => {
   return (
     <Flex w="100%" mt="5">
       <Input
-        type="text"
         border="1px solid black"
         borderRadius="6px 0 0 6px"
         _focus={{
           border: "1px solid black",
         }}
         placeholder="Please enter your message"
+        type="text"
         {...register("message", {
           required: true,
           maxLength: 100,
@@ -33,12 +33,11 @@ export const ChatFooter = ({}: ChatFooterProps) => {
         })}
       />
       <Button
-        type="submit"
-        bg={isDisabled ? "gray" : "black"}
         color="white"
-        borderRadius="0 6px 6px 0"
+        bg={isDisabled ? "gray" : "black"}
         border="1px solid black"
         borderLeft={0}
+        borderRadius="0 6px 6px 0"
         _hover={{
           bg: "white",
           color: "black",
@@ -48,6 +47,7 @@ export const ChatFooter = ({}: ChatFooterProps) => {
           color: "white",
         }}
         isDisabled={isDisabled}
+        type="submit"
       >
         Send
       </Button>

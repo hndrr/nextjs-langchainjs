@@ -1,5 +1,6 @@
 import { Avatar, Box, Flex, Text } from "@chakra-ui/react";
 import { AiOutlineUser } from "react-icons/ai";
+
 import { ChatIcon } from "@/components/SvgIcons";
 
 type ChatBubbleProps = {
@@ -11,21 +12,21 @@ export const ChatBubble = ({ message, isOwnMessage }: ChatBubbleProps) => {
   const bgColor = isOwnMessage ? "black" : "gray.200";
 
   return (
-    <Flex w="100%" justify={isOwnMessage ? "flex-end" : "flex-start"}>
+    <Flex justify={isOwnMessage ? "flex-end" : "flex-start"} w="100%">
       {!isOwnMessage && (
-        <Avatar icon={<ChatIcon boxSize="36px" />} mr="20px" bg="white" />
+        <Avatar mr="20px" bg="white" icon={<ChatIcon boxSize="36px" />} />
       )}
       <Box
-        maxWidth="70%"
+        pos="relative"
+        alignSelf={isOwnMessage ? "flex-end" : "flex-start"}
+        maxW="70%"
+        my={2}
+        px={4}
+        py={2}
+        color={isOwnMessage ? "white" : "black"}
+        bg={bgColor}
         borderWidth={1}
         borderRadius="lg"
-        py={2}
-        px={4}
-        my={2}
-        bg={bgColor}
-        color={isOwnMessage ? "white" : "black"}
-        alignSelf={isOwnMessage ? "flex-end" : "flex-start"}
-        position="relative"
         _before={{
           content: '""',
           position: "absolute",
@@ -42,7 +43,7 @@ export const ChatBubble = ({ message, isOwnMessage }: ChatBubbleProps) => {
         <Text fontSize="md">{message}</Text>
       </Box>
       {isOwnMessage && (
-        <Avatar icon={<AiOutlineUser size="36px" />} ml="16px" />
+        <Avatar ml="16px" icon={<AiOutlineUser size="36px" />} />
       )}
     </Flex>
   );

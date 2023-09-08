@@ -15,7 +15,7 @@ type DrawerProps = {
 
 export const Drawer = ({ children, isOpen, onClose }: DrawerProps) => {
   return (
-    <ChakraDrawwer placement="left" onClose={onClose} isOpen={isOpen}>
+    <ChakraDrawwer isOpen={isOpen} onClose={onClose} placement="left">
       <DrawerOverlay>
         <DrawerContent>
           <DrawerCloseButton />

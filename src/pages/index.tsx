@@ -1,6 +1,5 @@
 import { Divider, Flex } from "@chakra-ui/react";
 import { useState } from "react";
-import { SignIn } from "@/components/Auth/SignIn";
 
 import {
   ChatForm,
@@ -22,33 +21,25 @@ export default function Home() {
       <>
         {/* <SignIn /> */}
         <ChatForm messages={messages} setMessages={setMessages}>
-          <Flex w="100%" h="100vh" justify="center" align="center">
-            <Divider
-              orientation="vertical"
-              height="100%"
-              borderColor="gray.400"
-            />
+          <Flex align="center" justify="center" w="100%" h="100vh">
+            <Divider h="100%" borderColor="gray.400" orientation="vertical" />
             <Flex
-              maxW="640px"
+              pos="relative"
+              direction="column"
               w="100%"
+              maxW="640px"
               h="100%"
-              flexDir="column"
               px="20px"
               pt="80px"
               pb="20px"
-              pos="relative"
             >
               <ChatHeader />
-              <Divider borderColor="gray.300" mt="4" />
+              <Divider mt="4" borderColor="gray.300" />
               <ChatMessages messages={messages} />
               <Divider borderColor="gray.300" />
               <ChatFooter />
             </Flex>
-            <Divider
-              orientation="vertical"
-              height="100%"
-              borderColor="gray.400"
-            />
+            <Divider h="100%" borderColor="gray.400" orientation="vertical" />
           </Flex>
         </ChatForm>
       </>
