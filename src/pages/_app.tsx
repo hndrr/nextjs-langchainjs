@@ -5,7 +5,11 @@ import {
   SessionContextProvider,
   type Session,
 } from "@supabase/auth-helpers-react";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import {
+  Hydrate,
+  QueryClient,
+  QueryClientProvider,
+} from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import type { AppProps } from "next/app";
 
@@ -14,12 +18,7 @@ import theme from "@/utils/theme";
 
 const queryClient = new QueryClient();
 
-export default function App({
-  Component,
-  pageProps,
-}: AppProps<{
-  initialSession: Session;
-}>) {
+export default function App({ Component, pageProps }: AppProps) {
   const [supabaseClient] = useState(() => createPagesBrowserClient());
 
   return (
@@ -29,8 +28,10 @@ export default function App({
     >
       <ChakraProvider theme={theme}>
         <QueryClientProvider client={queryClient}>
-          <Component {...pageProps} />
-          <ReactQueryDevtools initialIsOpen={false} />
+          <Hydrate state={pageProps.dehydratedState}>
+            <Component {...pageProps} />
+            <ReactQueryDevtools initialIsOpen={false} />
+          </Hydrate>
         </QueryClientProvider>
       </ChakraProvider>
     </SessionContextProvider>
