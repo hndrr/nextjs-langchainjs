@@ -25,13 +25,13 @@ export default function Chat() {
             <Divider h="100%" borderColor="gray.400" orientation="vertical" />
             <Flex
               pos="relative"
+              justify="space-between"
               direction="column"
               w="100%"
               maxW="640px"
               h="100%"
               px="20px"
-              pt="80px"
-              pb="20px"
+              py="20px"
             >
               <ChatHeader />
               <Divider mt="4" borderColor="gray.300" />

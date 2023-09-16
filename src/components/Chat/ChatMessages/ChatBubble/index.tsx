@@ -40,7 +40,9 @@ export const ChatBubble = ({ message, isOwnMessage }: ChatBubbleProps) => {
           clipPath: "polygon(50% 0%, 0% 100%, 100% 80%)",
         }}
       >
-        <Text fontSize="md">{message}</Text>
+        <Text fontSize="md" whiteSpace="pre-line">
+          {message}
+        </Text>
       </Box>
       {isOwnMessage && (
         <Avatar ml="16px" icon={<AiOutlineUser size="36px" />} />
