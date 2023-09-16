@@ -1,11 +1,13 @@
-import { Flex, Input, Button } from "@chakra-ui/react";
-import { useFormContext } from "react-hook-form";
+import { Button, HStack } from "@chakra-ui/react";
+import { Controller, useFormContext } from "react-hook-form";
+
+import { AutoResizeTextarea } from "@/components/AutoResizeTextarea";
 
 type ChatFooterProps = {};
 
 export const ChatFooter = ({}: ChatFooterProps) => {
   const {
-    register,
+    control,
     watch,
     formState: { errors, isValid, isSubmitting },
   } = useFormContext();
@@ -17,20 +19,12 @@ export const ChatFooter = ({}: ChatFooterProps) => {
     values.message === null;
 
   return (
-    <Flex w="100%" mt="5">
-      <Input
-        border="1px solid black"
-        borderRadius="6px 0 0 6px"
-        _focus={{
-          border: "1px solid black",
-        }}
-        placeholder="Please enter your message"
-        type="text"
-        {...register("message", {
-          required: true,
-          maxLength: 100,
-          minLength: 1,
-        })}
+    <HStack align="end" w="100%" spacing="1">
+      <Controller
+        name="message"
+        control={control}
+        defaultValue=""
+        render={({ field }) => <AutoResizeTextarea {...field} />}
       />
       <Button
         color="white"
@@ -51,6 +45,6 @@ export const ChatFooter = ({}: ChatFooterProps) => {
       >
         Send
       </Button>
-    </Flex>
+    </HStack>
   );
 };
