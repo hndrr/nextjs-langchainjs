@@ -119,14 +119,7 @@ export const ChatForm = (props: ChatFormProps) => {
 
   return (
     <FormProvider {...methods}>
-      <form onSubmit={handleSubmit(onSubmitForm)}>
-        {children}
-        {/* <Box>
-          {tokens.map((token, index) => (
-            <span key={index}>{token}</span>
-          ))}
-        </Box> */}
-      </form>
+      <form onSubmit={handleSubmit(onSubmitForm)}>{children}</form>
     </FormProvider>
   );
 };

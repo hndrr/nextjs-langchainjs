@@ -1,5 +1,5 @@
-import { Flex } from "@chakra-ui/react";
-import React, { useEffect, useRef } from "react";
+import { Flex, Text } from "@chakra-ui/react";
+import React, { Fragment, useEffect, useRef } from "react";
 
 import { ChatBubble } from "@/components/Chat/ChatMessages/ChatBubble";
 
@@ -33,22 +33,33 @@ export const ChatMessages = ({ messages, tokens }: ChatMessagesProps) => {
         .filter((item: Message) => item.role !== "system")
         .map((item: { role: string; content: any }, index: number) => {
           return (
-            <>
+            <Fragment key={index}>
               <ChatBubble
-                key={index}
+                key={"message" + index}
                 message={item.content}
                 isOwnMessage={item.role === "user"}
               />
-              {index === messages.length - 1 &&
-                // item.role === "assistant" &&
-                tokens.length > 0 && (
-                  <ChatBubble
-                    key={index}
-                    message={tokens.map((token) => token).join("")}
-                    isOwnMessage={false}
-                  />
-                )}
-            </>
+              {index === messages.length - 1 && tokens.length > 0 && (
+                <ChatBubble
+                  key={"token" + index}
+                  message={
+                    tokens?.map((token, index) => {
+                      return (
+                        <Text
+                          key={index}
+                          as="span"
+                          sx={{ animationDelay: `${index * 1000}s` }}
+                          color="red.500"
+                        >
+                          {token}
+                        </Text>
+                      );
+                    }) || item.content
+                  }
+                  isOwnMessage={false}
+                />
+              )}
+            </Fragment>
           );
         })}
       {/* {mutation?.isLoading && <Spinner />} */}

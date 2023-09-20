@@ -11,7 +11,6 @@ export const passChatOpenAiModel = (
     callbackManager: CallbackManager.fromHandlers({
       async handleLLMNewToken(token: string) {
         setTokens((prevTokens) => [...prevTokens, token]);
-        console.log({ token });
       },
     }),
   });

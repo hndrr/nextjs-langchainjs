@@ -1,19 +1,18 @@
 import { Avatar, Box, Flex, Text } from "@chakra-ui/react";
+import { memo, type FC } from "react";
 import { AiOutlineUser } from "react-icons/ai";
 
 import { ChatIcon } from "@/components/SvgIcons";
 
 type ChatBubbleProps = {
-  message: string;
+  message: React.ReactNode;
   isOwnMessage: boolean;
-  tokens?: string[];
 };
 
-export const ChatBubble = ({
+export const ChatBubble: FC<ChatBubbleProps> = memo(function ChatBubble({
   message,
   isOwnMessage,
-  tokens,
-}: ChatBubbleProps) => {
+}) {
   const bgColor = isOwnMessage ? "black" : "gray.200";
 
   return (
@@ -46,16 +45,7 @@ export const ChatBubble = ({
         }}
       >
         <Text fontSize="md" whiteSpace="pre-line">
-          {tokens?.map((token, index) => {
-            if (message.includes(token)) {
-              return (
-                <Text key={index} as="span" color="red.500">
-                  {token}
-                </Text>
-              );
-            }
-            return token;
-          }) || message}
+          {message}
         </Text>
       </Box>
       {isOwnMessage && (
@@ -63,4 +53,4 @@ export const ChatBubble = ({
       )}
     </Flex>
   );
-};
+});
