@@ -1,10 +1,8 @@
-import {
-  type QueryKey,
-  useMutation,
-  useQueryClient,
-} from "@tanstack/react-query";
-import { Message } from "@/components/Chat/ChatMessages";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+
 import { postMessage } from "@/pages/api";
+
+import type { Message } from "@/components/Chat/ChatMessages";
 
 const queryKey: [string] = ["messages"];
 

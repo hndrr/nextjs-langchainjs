@@ -1,9 +1,10 @@
-import { ChatMessageHistory } from "langchain/memory";
-import { ChatCompletionRequestMessage } from "openai";
-import { Message } from "@/components/Chat";
+// import { ChatMessageHistory } from "langchain/memory";
+// import { ChatCompletionRequestMessage } from "openai";
 import { passOpenAiChatModel } from "@/lib/langchain";
 import { runChatllm } from "@/pages/api";
 import { dummyChat } from "@/utils/dummyMessages";
+
+import type { Message } from "@/components/Chat";
 
 export const postMessage = async (data: {
   message: string;
