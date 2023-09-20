@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { postMessage } from "@/pages/api";
 
-import type { Message } from "@/components/Chat/ChatMessages";
+import type { BaseMessageLike } from "langchain/schema";
 
 const queryKey: [string] = ["messages"];
 
@@ -10,7 +10,7 @@ export const useUpdateDataMutation = () => {
   const queryClient = useQueryClient();
 
   return useMutation(
-    (data: { message: string; history: Message[] }) => postMessage(data),
+    (data: { message: BaseMessageLike[] }) => postMessage(data),
     {
       onSuccess: () => {
         queryClient.invalidateQueries(queryKey);

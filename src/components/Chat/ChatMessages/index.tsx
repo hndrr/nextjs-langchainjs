@@ -1,9 +1,7 @@
 import { Flex } from "@chakra-ui/react";
-import React, { useContext, useEffect, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 
 import { ChatBubble } from "@/components/Chat/ChatMessages/ChatBubble";
-import { Spinner } from "@/components/Spinner";
-import { MutationContext } from "@/contexts";
 
 export type Message = {
   role: "user" | "assistant" | "system";
@@ -15,7 +13,7 @@ type ChatMessagesProps = {
 };
 
 export const ChatMessages = ({ messages }: ChatMessagesProps) => {
-  const mutation = useContext(MutationContext);
+  // const mutation = useContext(MutationContext);
 
   const AlwaysScrollToBottom = () => {
     const elementRef = useRef<HTMLDivElement>(null);
@@ -41,7 +39,7 @@ export const ChatMessages = ({ messages }: ChatMessagesProps) => {
             />
           );
         })}
-      {mutation?.isLoading && <Spinner />}
+      {/* {mutation?.isLoading && <Spinner />} */}
       <AlwaysScrollToBottom />
     </Flex>
   );

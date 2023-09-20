@@ -1,7 +1,7 @@
 // import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { HumanMessage } from "langchain/schema";
 import { FormProvider, useForm } from "react-hook-form";
 
-import { MutationContext } from "@/contexts";
 import { useUpdateDataMutation } from "@/hooks/useUpdateDataMutation";
 
 import type { Message } from "@/components/Chat/ChatMessages";
@@ -58,10 +58,13 @@ export const ChatForm = (props: ChatFormProps) => {
     reset();
     // 非同期処理
     sendMessage.mutate(
-      { message: data.message, history: messages },
+      { message: [new HumanMessage(data.message)] },
       {
         onSuccess: (res) => {
-          setMessages((old) => [...old, { role: "assistant", content: res }]);
+          setMessages((old) => [
+            ...old,
+            { role: "assistant", content: res.content },
+          ]);
           // TODO responceのDB登録
           // addSupabaseData({
           //   message: res,
@@ -115,10 +118,8 @@ export const ChatForm = (props: ChatFormProps) => {
   // }, []);
 
   return (
-    <MutationContext.Provider value={sendMessage}>
-      <FormProvider {...methods}>
-        <form onSubmit={handleSubmit(onSubmitForm)}>{children}</form>
-      </FormProvider>
-    </MutationContext.Provider>
+    <FormProvider {...methods}>
+      <form onSubmit={handleSubmit(onSubmitForm)}>{children}</form>
+    </FormProvider>
   );
 };
