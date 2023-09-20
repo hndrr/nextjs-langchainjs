@@ -2,7 +2,7 @@ import { Avatar, Box, Flex, Text } from "@chakra-ui/react";
 import { memo, type FC } from "react";
 import { AiOutlineUser } from "react-icons/ai";
 
-import { ChatIcon } from "@/components/SvgIcons";
+import { PodIcon } from "@/components/SvgIcons";
 
 type ChatBubbleProps = {
   message: React.ReactNode;
@@ -18,7 +18,7 @@ export const ChatBubble: FC<ChatBubbleProps> = memo(function ChatBubble({
   return (
     <Flex justify={isOwnMessage ? "flex-end" : "flex-start"} w="100%">
       {!isOwnMessage && (
-        <Avatar mr="20px" bg="white" icon={<ChatIcon boxSize="36px" />} />
+        <Avatar mr="20px" bg="gray.300" icon={<PodIcon boxSize="36px" />} />
       )}
       <Box
         pos="relative"
