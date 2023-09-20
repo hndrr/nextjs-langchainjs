@@ -1,5 +1,5 @@
 // import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { HumanMessage } from "langchain/schema";
+import { AIMessage, HumanMessage } from "langchain/schema";
 import { type ReactElement } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
@@ -31,7 +31,7 @@ type ChatFormProps = {
 };
 
 export const ChatForm = (props: ChatFormProps) => {
-  const { children, setMessages, setTokens } = props;
+  const { children, setMessages, messages, setTokens } = props;
   // const { session, profileFromGithub } = useAuth();
   // const [messageText, setMessageText] = useState<Database[]>([]);
 
@@ -57,8 +57,20 @@ export const ChatForm = (props: ChatFormProps) => {
     // addSupabaseData({ message: data.message, ...profileFromGithub });
     reset();
     // 非同期処理
+    // 過去のメッセージを含めて送信して記憶させる
     sendMessage.mutate(
-      { message: [new HumanMessage(data.message)] },
+      {
+        message: [
+          ...messages.map((message) =>
+            message.role === "user"
+              ? new HumanMessage(message.content)
+              : message.role === "assistant"
+              ? new AIMessage(message.content)
+              : ""
+          ),
+          new HumanMessage(data.message),
+        ],
+      },
       {
         onSuccess: (res) => {
           setMessages((old) => [
