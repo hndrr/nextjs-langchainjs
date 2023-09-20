@@ -6,9 +6,14 @@ import { ChatIcon } from "@/components/SvgIcons";
 type ChatBubbleProps = {
   message: string;
   isOwnMessage: boolean;
+  tokens?: string[];
 };
 
-export const ChatBubble = ({ message, isOwnMessage }: ChatBubbleProps) => {
+export const ChatBubble = ({
+  message,
+  isOwnMessage,
+  tokens,
+}: ChatBubbleProps) => {
   const bgColor = isOwnMessage ? "black" : "gray.200";
 
   return (
@@ -41,7 +46,16 @@ export const ChatBubble = ({ message, isOwnMessage }: ChatBubbleProps) => {
         }}
       >
         <Text fontSize="md" whiteSpace="pre-line">
-          {message}
+          {tokens?.map((token, index) => {
+            if (message.includes(token)) {
+              return (
+                <Text key={index} as="span" color="red.500">
+                  {token}
+                </Text>
+              );
+            }
+            return token;
+          }) || message}
         </Text>
       </Box>
       {isOwnMessage && (

@@ -1,11 +1,11 @@
 // import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { HumanMessage } from "langchain/schema";
+import { type ReactElement } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
 import { useUpdateDataMutation } from "@/hooks/useUpdateDataMutation";
 
 import type { Message } from "@/components/Chat/ChatMessages";
-import type { ReactElement } from "react";
 // import { passOpenAiChatModel } from "@/lib/langchain";
 // import { runChatMemory } from "@/lib/langchain/memory/chat_memory";
 // import { runChain, runChat, runChatllm, postMessage } from "@/pages/api";
@@ -27,10 +27,11 @@ type ChatFormProps = {
   children: ReactElement;
   messages: Message[];
   setMessages: React.Dispatch<React.SetStateAction<Message[]>>;
+  setTokens: React.Dispatch<React.SetStateAction<string[]>>;
 };
 
 export const ChatForm = (props: ChatFormProps) => {
-  const { children, messages, setMessages } = props;
+  const { children, setMessages, setTokens } = props;
   // const { session, profileFromGithub } = useAuth();
   // const [messageText, setMessageText] = useState<Database[]>([]);
 
@@ -44,8 +45,7 @@ export const ChatForm = (props: ChatFormProps) => {
     reset,
     watch,
   } = methods;
-
-  const sendMessage = useUpdateDataMutation();
+  const sendMessage = useUpdateDataMutation({ setTokens });
   // const values = watch();
 
   const onSubmitForm = (data: FormValues) => {
@@ -119,7 +119,14 @@ export const ChatForm = (props: ChatFormProps) => {
 
   return (
     <FormProvider {...methods}>
-      <form onSubmit={handleSubmit(onSubmitForm)}>{children}</form>
+      <form onSubmit={handleSubmit(onSubmitForm)}>
+        {children}
+        {/* <Box>
+          {tokens.map((token, index) => (
+            <span key={index}>{token}</span>
+          ))}
+        </Box> */}
+      </form>
     </FormProvider>
   );
 };

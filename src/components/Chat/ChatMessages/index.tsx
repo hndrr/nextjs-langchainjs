@@ -10,9 +10,10 @@ export type Message = {
 
 type ChatMessagesProps = {
   messages: Message[];
+  tokens: string[];
 };
 
-export const ChatMessages = ({ messages }: ChatMessagesProps) => {
+export const ChatMessages = ({ messages, tokens }: ChatMessagesProps) => {
   // const mutation = useContext(MutationContext);
 
   const AlwaysScrollToBottom = () => {
@@ -32,11 +33,22 @@ export const ChatMessages = ({ messages }: ChatMessagesProps) => {
         .filter((item: Message) => item.role !== "system")
         .map((item: { role: string; content: any }, index: number) => {
           return (
-            <ChatBubble
-              key={index}
-              message={item.content}
-              isOwnMessage={item.role === "user"}
-            />
+            <>
+              <ChatBubble
+                key={index}
+                message={item.content}
+                isOwnMessage={item.role === "user"}
+              />
+              {index === messages.length - 1 &&
+                // item.role === "assistant" &&
+                tokens.length > 0 && (
+                  <ChatBubble
+                    key={index}
+                    message={tokens.map((token) => token).join("")}
+                    isOwnMessage={false}
+                  />
+                )}
+            </>
           );
         })}
       {/* {mutation?.isLoading && <Spinner />} */}

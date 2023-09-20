@@ -3,12 +3,19 @@ import type { ChatOpenAI } from "langchain/chat_models/openai";
 import type { BaseMessageLike } from "langchain/schema";
 
 type ChatLlmProps = {
-  model: () => ChatOpenAI;
+  model: (
+    setTokens: React.Dispatch<React.SetStateAction<string[]>>
+  ) => ChatOpenAI;
   message: BaseMessageLike[];
+  setTokens: React.Dispatch<React.SetStateAction<string[]>>;
 } & PartialOpenAiChatModel;
 
-export const runChatllm = async ({ model, message }: ChatLlmProps) => {
-  const chat = model();
+export const runChatllm = async ({
+  model,
+  message,
+  setTokens,
+}: ChatLlmProps) => {
+  const chat = model(setTokens);
   const response = await chat.call(message);
 
   return response;

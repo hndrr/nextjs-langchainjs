@@ -6,7 +6,10 @@ import { runChatllm } from "@/pages/api";
 
 import type { BaseMessageLike } from "langchain/schema";
 
-export const postMessage = async (data: { message: BaseMessageLike[] }) => {
+export const postMessage = async (
+  data: { message: BaseMessageLike[] },
+  setTokens: React.Dispatch<React.SetStateAction<string[]>>
+) => {
   // const res = await runChain({
   //   variant: message,
   //   prompt: passPromptTemplate,
@@ -18,12 +21,7 @@ export const postMessage = async (data: { message: BaseMessageLike[] }) => {
   const res = await runChatllm({
     model: passChatOpenAiModel,
     message: data.message,
-    // prefixMessages: [...dummyChat, ...data.history].map((message) => {
-    //   return {
-    //     role: message.role,
-    //     content: message.content,
-    //   };
-    // }),
+    setTokens,
   });
   return res;
 };
