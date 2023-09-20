@@ -1,9 +1,7 @@
-import { Flex } from "@chakra-ui/react";
-import React, { useContext, useEffect, useRef } from "react";
+import { Flex, Text } from "@chakra-ui/react";
+import React, { Fragment, useEffect, useRef } from "react";
 
 import { ChatBubble } from "@/components/Chat/ChatMessages/ChatBubble";
-import { Spinner } from "@/components/Spinner";
-import { MutationContext } from "@/contexts";
 
 export type Message = {
   role: "user" | "assistant" | "system";
@@ -12,10 +10,11 @@ export type Message = {
 
 type ChatMessagesProps = {
   messages: Message[];
+  tokens: string[];
 };
 
-export const ChatMessages = ({ messages }: ChatMessagesProps) => {
-  const mutation = useContext(MutationContext);
+export const ChatMessages = ({ messages, tokens }: ChatMessagesProps) => {
+  // const mutation = useContext(MutationContext);
 
   const AlwaysScrollToBottom = () => {
     const elementRef = useRef<HTMLDivElement>(null);
@@ -34,14 +33,36 @@ export const ChatMessages = ({ messages }: ChatMessagesProps) => {
         .filter((item: Message) => item.role !== "system")
         .map((item: { role: string; content: any }, index: number) => {
           return (
-            <ChatBubble
-              key={index}
-              message={item.content}
-              isOwnMessage={item.role === "user"}
-            />
+            <Fragment key={index}>
+              <ChatBubble
+                key={"message" + index}
+                message={item.content}
+                isOwnMessage={item.role === "user"}
+              />
+              {index === messages.length - 1 && tokens.length > 0 && (
+                <ChatBubble
+                  key={"token" + index}
+                  message={
+                    tokens?.map((token, index) => {
+                      return (
+                        <Text
+                          key={index}
+                          as="span"
+                          sx={{ animationDelay: `${index * 1000}s` }}
+                          color="red.500"
+                        >
+                          {token}
+                        </Text>
+                      );
+                    }) || item.content
+                  }
+                  isOwnMessage={false}
+                />
+              )}
+            </Fragment>
           );
         })}
-      {mutation?.isLoading && <Spinner />}
+      {/* {mutation?.isLoading && <Spinner />} */}
       <AlwaysScrollToBottom />
     </Flex>
   );

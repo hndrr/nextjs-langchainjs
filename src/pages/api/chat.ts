@@ -1,10 +1,12 @@
 import { ChatOpenAI } from "langchain/chat_models/openai";
-import { Message } from "@/components/Chat/ChatMessages";
+
 import {
   aiChatMessage,
   humanChatMessage,
   systemPrompt,
 } from "@/lib/langchain/messages";
+
+import type { Message } from "@/components/Chat/ChatMessages";
 
 type ChatProps = {
   model: () => ChatOpenAI;

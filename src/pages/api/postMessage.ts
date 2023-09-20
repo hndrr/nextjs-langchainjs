@@ -1,14 +1,15 @@
-import { ChatMessageHistory } from "langchain/memory";
-import { ChatCompletionRequestMessage } from "openai";
-import { Message } from "@/components/Chat";
-import { passOpenAiChatModel } from "@/lib/langchain";
-import { runChatllm } from "@/pages/api";
-import { dummyChat } from "@/utils/dummyMessages";
+// import { ChatMessageHistory } from "langchain/memory";
+// import { ChatCompletionRequestMessage } from "openai";
 
-export const postMessage = async (data: {
-  message: string;
-  history: Message[];
-}) => {
+import { passChatOpenAiModel } from "@/lib/langchain";
+import { runChatllm } from "@/pages/api";
+
+import type { BaseMessageLike } from "langchain/schema";
+
+export const postMessage = async (
+  data: { message: BaseMessageLike[] },
+  setTokens: React.Dispatch<React.SetStateAction<string[]>>
+) => {
   // const res = await runChain({
   //   variant: message,
   //   prompt: passPromptTemplate,
@@ -18,14 +19,9 @@ export const postMessage = async (data: {
   // const res = await runChatMemory();
 
   const res = await runChatllm({
-    model: passOpenAiChatModel,
+    model: passChatOpenAiModel,
     message: data.message,
-    prefixMessages: [...dummyChat, ...data.history].map((message) => {
-      return {
-        role: message.role,
-        content: message.content,
-      };
-    }),
+    setTokens,
   });
   return res;
 };

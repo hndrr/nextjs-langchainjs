@@ -1,12 +1,12 @@
-import type { UseMutationResult } from "@tanstack/react-query";
 import { createContext, type ReactNode } from "react";
 
-import type { Message } from "@/components/Chat/ChatMessages";
+import type { UseMutationResult } from "@tanstack/react-query";
+import type { BaseMessageLike } from "langchain/schema";
 
 type MutationContextType = UseMutationResult<
   string,
   unknown,
-  { message: string; history: Message[] },
+  { message: BaseMessageLike[] },
   unknown
 >;
 

@@ -8,7 +8,7 @@ export const dummyMessages: DummyMessages = {
   data: [
     {
       role: "assistant",
-      content: "わたしの名前はAgentです。",
+      content: "わたしの名前はPODくんです。",
     },
     {
       role: "assistant",

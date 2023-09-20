@@ -1,12 +1,14 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { ReactElement, useEffect, useState } from "react";
+// import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { AIMessage, HumanMessage } from "langchain/schema";
+import { type ReactElement } from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import type { Message } from "@/components/Chat/ChatMessages";
-import { MutationContext } from "@/contexts";
+
 import { useUpdateDataMutation } from "@/hooks/useUpdateDataMutation";
-import { passOpenAiChatModel } from "@/lib/langchain";
-import { runChatMemory } from "@/lib/langchain/memory/chat_memory";
-import { runChain, runChat, runChatllm, postMessage } from "@/pages/api";
+
+import type { Message } from "@/components/Chat/ChatMessages";
+// import { passOpenAiChatModel } from "@/lib/langchain";
+// import { runChatMemory } from "@/lib/langchain/memory/chat_memory";
+// import { runChain, runChat, runChatllm, postMessage } from "@/pages/api";
 // import { useAuth } from "@/hooks/useAuth";
 // import { passOpenAiModel, passPromptTemplate } from "@/lib/langchain";
 // import type { Database } from "@/lib/supabase";
@@ -25,10 +27,11 @@ type ChatFormProps = {
   children: ReactElement;
   messages: Message[];
   setMessages: React.Dispatch<React.SetStateAction<Message[]>>;
+  setTokens: React.Dispatch<React.SetStateAction<string[]>>;
 };
 
 export const ChatForm = (props: ChatFormProps) => {
-  const { children, messages, setMessages } = props;
+  const { children, setMessages, messages, setTokens } = props;
   // const { session, profileFromGithub } = useAuth();
   // const [messageText, setMessageText] = useState<Database[]>([]);
 
@@ -42,8 +45,7 @@ export const ChatForm = (props: ChatFormProps) => {
     reset,
     watch,
   } = methods;
-
-  const sendMessage = useUpdateDataMutation();
+  const sendMessage = useUpdateDataMutation({ setTokens });
   // const values = watch();
 
   const onSubmitForm = (data: FormValues) => {
@@ -55,11 +57,26 @@ export const ChatForm = (props: ChatFormProps) => {
     // addSupabaseData({ message: data.message, ...profileFromGithub });
     reset();
     // 非同期処理
+    // 過去のメッセージを含めて送信して記憶させる
     sendMessage.mutate(
-      { message: data.message, history: messages },
+      {
+        message: [
+          ...messages.map((message) =>
+            message.role === "user"
+              ? new HumanMessage(message.content)
+              : message.role === "assistant"
+              ? new AIMessage(message.content)
+              : ""
+          ),
+          new HumanMessage(data.message),
+        ],
+      },
       {
         onSuccess: (res) => {
-          setMessages((old) => [...old, { role: "assistant", content: res }]);
+          setMessages((old) => [
+            ...old,
+            { role: "assistant", content: res.content },
+          ]);
           // TODO responceのDB登録
           // addSupabaseData({
           //   message: res,
@@ -113,10 +130,8 @@ export const ChatForm = (props: ChatFormProps) => {
   // }, []);
 
   return (
-    <MutationContext.Provider value={sendMessage}>
-      <FormProvider {...methods}>
-        <form onSubmit={handleSubmit(onSubmitForm)}>{children}</form>
-      </FormProvider>
-    </MutationContext.Provider>
+    <FormProvider {...methods}>
+      <form onSubmit={handleSubmit(onSubmitForm)}>{children}</form>
+    </FormProvider>
   );
 };

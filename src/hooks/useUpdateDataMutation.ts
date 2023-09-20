@@ -1,22 +1,27 @@
-import {
-  type QueryKey,
-  useMutation,
-  useQueryClient,
-} from "@tanstack/react-query";
-import { Message } from "@/components/Chat/ChatMessages";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+
 import { postMessage } from "@/pages/api";
+
+import type { BaseMessageLike } from "langchain/schema";
+
+type UseUpdateDataMutationProps = {
+  setTokens: React.Dispatch<React.SetStateAction<string[]>>;
+};
 
 const queryKey: [string] = ["messages"];
 
-export const useUpdateDataMutation = () => {
+export const useUpdateDataMutation = ({
+  setTokens,
+}: UseUpdateDataMutationProps) => {
   const queryClient = useQueryClient();
 
-  return useMutation(
-    (data: { message: string; history: Message[] }) => postMessage(data),
+  const mutation = useMutation(
+    (data: { message: BaseMessageLike[] }) => postMessage(data, setTokens),
     {
       onSuccess: () => {
         queryClient.invalidateQueries(queryKey);
       },
     }
   );
+  return { ...mutation };
 };
